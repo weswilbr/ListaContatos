@@ -6,7 +6,6 @@ body {
     margin: 0;
     padding: 20px;
 }
-
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -15,92 +14,40 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
-h1, h2 {
-    text-align: center;
-    color: #0056b3;
-}
-
-hr {
-    border: 0;
-    border-top: 1px solid #eee;
-    margin: 30px 0;
-}
+h1, h2 { text-align: center; color: #0056b3; }
+hr { border: 0; border-top: 1px solid #eee; margin: 30px 0; }
 
 /* --- FORMULÁRIO --- */
-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 30px;
-}
+form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+form input { padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
+form button { grid-column: 1 / -1; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer; transition: background-color 0.3s; }
+form button:hover { background-color: #0056b3; }
+/* NOVO: Cor verde para o botão quando estiver no modo de edição */
+form button.editing { background-color: #28a745; }
+form button.editing:hover { background-color: #218838; }
 
-form input {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-}
+/* --- CABEÇALHO DA LISTA E BOTÕES --- */
+.header-list { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.header-list h2 { margin: 0; }
+#export-pdf-btn { padding: 10px 20px; background-color: #17a2b8; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer; transition: background-color 0.3s; }
+#export-pdf-btn:hover { background-color: #138496; }
 
-form button {
-    grid-column: 1 / -1;
-    padding: 12px;
+/* --- TABELA DE CONTATOS E BOTÕES DE AÇÃO --- */
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+th { background-color: #f2f2f2; }
+
+.edit-btn {
     background-color: #007bff;
     color: white;
     border: none;
+    padding: 8px 12px;
     border-radius: 5px;
-    font-size: 1.1rem;
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-right: 5px; /* Espaço entre os botões */
 }
-
-form button:hover {
-    background-color: #0056b3;
-}
-
-/* --- CABEÇALHO DA LISTA E BOTÕES --- */
-.header-list {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.header-list h2 {
-    margin: 0;
-}
-
-#export-pdf-btn {
-    padding: 10px 20px;
-    background-color: #17a2b8;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#export-pdf-btn:hover {
-    background-color: #138496;
-}
-
-/* --- TABELA DE CONTATOS --- */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
-    background-color: #f2f2f2;
-}
+.edit-btn:hover { background-color: #0056b3; }
 
 .delete-btn {
     background-color: #dc3545;
@@ -111,57 +58,12 @@ th {
     cursor: pointer;
     transition: background-color 0.3s;
 }
+.delete-btn:hover { background-color: #c82333; }
 
-.delete-btn:hover {
-    background-color: #c82333;
-}
-
-/* --- ESTILOS PARA O CONTEÚDO DO PDF (MÉTODO CORRETO PARA OCULTAR) --- */
-#pdf-content {
-    /* Esconde o elemento da tela, mas o mantém acessível para o script */
-    position: absolute;
-    left: -9999px;
-    top: auto;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-
-    /* Estilos que serão aplicados no documento PDF final */
-    font-family: Arial, sans-serif;
-    color: #333;
-    width: 210mm; /* Largura de uma página A4 */
-    padding: 15mm;
-    box-sizing: border-box;
-}
-
-#pdf-content h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 5px;
-    font-size: 24px;
-}
-
-#pdf-content p {
-    text-align: center;
-    color: #666;
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 12px;
-}
-
-#pdf-content table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 11px;
-}
-
-#pdf-content th, #pdf-content td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-#pdf-content th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-}
+/* --- ESTILOS PARA O CONTEÚDO DO PDF --- */
+#pdf-content { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; font-family: Arial, sans-serif; color: #333; width: 210mm; padding: 15mm; box-sizing: border-box; }
+#pdf-content h1 { text-align: center; color: #333; margin-bottom: 5px; font-size: 24px; }
+#pdf-content p { text-align: center; color: #666; margin-top: 0; margin-bottom: 20px; font-size: 12px; }
+#pdf-content table { width: 100%; border-collapse: collapse; font-size: 11px; }
+#pdf-content th, #pdf-content td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+#pdf-content th { background-color: #f2f2f2; font-weight: bold; }
