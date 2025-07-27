@@ -24,19 +24,20 @@ document.addEventListener('DOMContentLoaded', () => {
         contactsList.innerHTML = '';
         if (contacts.length === 0) {
             contactsList.innerHTML = '<tr><td colspan="6" style="text-align:center;">Nenhum contato cadastrado.</td></tr>';
-            exportPdfBtn.disabled = true; // Desabilita o botão se não há contatos
+            exportPdfBtn.disabled = true;
             return;
         }
-        exportPdfBtn.disabled = false; // Habilita o botão se há contatos
+        exportPdfBtn.disabled = false;
         contacts.forEach((contact, index) => {
             const row = document.createElement('tr');
+            // ADICIONADO: 'data-label' para a tabela responsiva no CSS
             row.innerHTML = `
-                <td>${contact.nome}</td>
-                <td>${contact.sobrenome}</td>
-                <td>${contact.telefone}</td>
-                <td>${contact.cidade}</td>
-                <td>${contact.estado}</td>
-                <td>
+                <td data-label="Nome">${contact.nome}</td>
+                <td data-label="Sobrenome">${contact.sobrenome}</td>
+                <td data-label="Telefone">${contact.telefone}</td>
+                <td data-label="Cidade">${contact.cidade}</td>
+                <td data-label="Estado">${contact.estado}</td>
+                <td data-label="Ações">
                     <button class="edit-btn" data-index="${index}">Editar</button>
                     <button class="delete-btn" data-index="${index}">Deletar</button>
                 </td>
@@ -48,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. Lógica de envio do formulário (Adicionar e Atualizar)
     contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
-
         const contactData = {
             nome: document.getElementById('nome').value.trim(),
             sobrenome: document.getElementById('sobrenome').value.trim(),
@@ -57,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
             estado: document.getElementById('estado').value.trim().toUpperCase()
         };
 
-        // MELHORIA: Validação de dados
         if (!contactData.nome || !contactData.sobrenome || !contactData.telefone || !contactData.cidade || !contactData.estado) {
             alert("Por favor, preencha todos os campos.");
             return;
@@ -70,9 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const contacts = getContacts();
         const editIndex = editIndexInput.value;
 
-        if (editIndex !== "") { // Modo Edição
+        if (editIndex !== "") {
             contacts[editIndex] = contactData;
-        } else { // Modo Adição
+        } else {
             contacts.push(contactData);
         }
         
@@ -85,8 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
     contactsList.addEventListener('click', (e) => {
         const target = e.target;
         const index = target.getAttribute('data-index');
-
-        // Otimização: Sai da função se o clique não foi em um botão com 'data-index'
         if (!index) return;
         
         const contacts = getContacts();
@@ -111,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 contacts.splice(index, 1);
                 saveContacts(contacts);
                 renderContacts();
-                if (editIndexInput.value === index) { // Reseta o form se o item deletado estava em edição
+                if (editIndexInput.value === index) {
                     resetForm();
                 }
             }
@@ -124,41 +121,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const pdfContent = document.getElementById('pdf-content');
         const today = new Date();
         const formattedDate = today.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        
-        // MELHORIA: Nome do arquivo mais limpo
-        const fileDate = today.toISOString().slice(0, 10); // Formato YYYY-MM-DD
+        const fileDate = today.toISOString().slice(0, 10);
         
         let reportHTML = `
             <h1>Relatório de Contatos</h1>
             <p>Gerado em: ${formattedDate}</p>
             <table>
                 <thead>
-                    <tr>
-                        <th>Nome Completo</th>
-                        <th>Telefone</th>
-                        <th>Cidade</th>
-                        <th>Estado</th>
-                    </tr>
+                    <tr><th>Nome Completo</th><th>Telefone</th><th>Cidade</th><th>Estado</th></tr>
                 </thead>
-                <tbody>
-        `;
+                <tbody>`;
 
         contacts.forEach(contact => {
-            reportHTML += `
-                <tr>
-                    <td>${contact.nome} ${contact.sobrenome}</td>
-                    <td>${contact.telefone}</td>
-                    <td>${contact.cidade}</td>
-                    <td>${contact.estado}</td>
-                </tr>
-            `;
+            reportHTML += `<tr>
+                <td>${contact.nome} ${contact.sobrenome}</td>
+                <td>${contact.telefone}</td>
+                <td>${contact.cidade}</td>
+                <td>${contact.estado}</td>
+            </tr>`;
         });
 
         reportHTML += `</tbody></table>`;
         pdfContent.innerHTML = reportHTML;
         
         const options = {
-            margin:       [10, 10, 10, 10], // top, left, bottom, right
+            margin:       [10, 10, 10, 10],
             filename:     `relatorio-contatos-${fileDate}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true, logging: false },
