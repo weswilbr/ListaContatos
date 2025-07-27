@@ -3,29 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Contatos com Exportação PDF</title>
+    <title>Gerenciador de Contatos</title>
     <link rel="stylesheet" href="style.css">
     <!-- Inclui a biblioteca html2pdf.js para gerar o PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Minha Lista de Contatos</h1>
+        <h1>Meu Gerenciador de Contatos</h1>
 
-        <form id="contact-form">
+        <form id="contact-form" novalidate>
             <input type="text" id="nome" placeholder="Nome" required>
             <input type="text" id="sobrenome" placeholder="Sobrenome" required>
             <input type="tel" id="telefone" placeholder="Telefone" required>
             <input type="text" id="cidade" placeholder="Cidade" required>
             <input type="text" id="estado" placeholder="Estado (UF)" required maxlength="2">
-            <button type="submit">Adicionar Contato</button>
+            
+            <!-- CORREÇÃO: Campo oculto para guardar o índice do contato em edição -->
+            <input type="hidden" id="edit-index">
+            
+            <!-- CORREÇÃO: ID adicionado ao botão para que o JS possa selecioná-lo -->
+            <button type="submit" id="submit-btn">Adicionar Contato</button>
         </form>
 
         <hr>
 
         <div class="header-list">
             <h2>Contatos Salvos</h2>
-            <button id="export-pdf-btn">Exportar Lista para PDF</button>
+            <button id="export-pdf-btn">Exportar para PDF</button>
         </div>
         
         <table id="contacts-table">
