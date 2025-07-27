@@ -5,6 +5,7 @@ body {
     color: #333;
     margin: 0;
     padding: 20px;
+    -webkit-tap-highlight-color: transparent; /* Remove o destaque de toque em mobile */
 }
 
 .container {
@@ -22,7 +23,6 @@ hr { border: 0; border-top: 1px solid #eee; margin: 30px 0; }
 /* --- FORMULÁRIO --- */
 form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
 form input { padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; transition: box-shadow 0.2s; }
-/* MELHORIA: Feedback visual quando um campo está em foco */
 form input:focus { outline: none; border-color: #007bff; box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); }
 form button { grid-column: 1 / -1; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer; transition: background-color 0.3s; }
 form button:hover { background-color: #0056b3; }
@@ -34,21 +34,17 @@ form button.editing:hover { background-color: #218838; }
 .header-list h2 { margin: 0; flex-grow: 1; }
 #export-pdf-btn { padding: 10px 20px; background-color: #17a2b8; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer; transition: background-color 0.3s; }
 #export-pdf-btn:hover { background-color: #138496; }
+#export-pdf-btn:disabled { background-color: #a0a0a0; cursor: not-allowed; }
 
 /* --- TABELA DE CONTATOS E BOTÕES DE AÇÃO --- */
 table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
 th { background-color: #f2f2f2; }
-td:last-child { white-space: nowrap; } /* Evita que os botões quebrem linha */
+td:last-child { white-space: nowrap; }
 
 .edit-btn, .delete-btn {
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-right: 5px;
+    color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;
+    margin-right: 5px; font-size: 0.9rem;
 }
 .edit-btn { background-color: #007bff; }
 .edit-btn:hover { background-color: #0056b3; }
@@ -56,18 +52,52 @@ td:last-child { white-space: nowrap; } /* Evita que os botões quebrem linha */
 .delete-btn:hover { background-color: #c82333; }
 
 /* --- ESTILOS PARA O CONTEÚDO DO PDF --- */
-#pdf-content { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; font-family: Arial, sans-serif; color: #333; width: 210mm; padding: 15mm; box-sizing: border-box; }
-#pdf-content h1 { text-align: center; color: #333; margin-bottom: 5px; font-size: 24px; }
-#pdf-content p { text-align: center; color: #666; margin-top: 0; margin-bottom: 20px; font-size: 12px; }
-#pdf-content table { width: 100%; border-collapse: collapse; font-size: 11px; }
-#pdf-content th, #pdf-content td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-#pdf-content th { background-color: #f2f2f2; font-weight: bold; }
+#pdf-content { position: absolute; left: -9999px; }
 
-/* MELHORIA: Media Query para Responsividade */
+/* --- MEDIA QUERY PARA RESPONSIVIDADE COMPLETA --- */
 @media (max-width: 768px) {
     body { padding: 10px; }
-    .container { padding: 20px; }
-    form { grid-template-columns: 1fr; } /* Coluna única para o formulário */
+    .container { padding: 15px; }
+    form { grid-template-columns: 1fr; }
     .header-list { flex-direction: column; align-items: stretch; gap: 15px; }
     .header-list h2 { text-align: center; }
+
+    /* --- RESPONSIVIDADE DA TABELA (ESTILO CARTÃO) --- */
+    table thead { display: none; }
+    table, table tbody, table tr, table td { display: block; width: 100%; }
+    
+    table tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    table tr:last-child { margin-bottom: 0; }
+
+    table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        border-bottom: 1px solid #eee;
+    }
+    table td:last-child { border-bottom: none; }
+
+    table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: calc(50% - 20px);
+        text-align: left;
+        font-weight: bold;
+        color: #333;
+    }
+
+    td[data-label="Ações"] {
+        padding-top: 15px;
+        padding-bottom: 5px;
+        text-align: center;
+        padding-left: 0;
+    }
+    td[data-label="Ações"]::before { content: ""; }
 }
