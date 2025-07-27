@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Contatos</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 1. Adicionando a biblioteca html2pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Minha Lista de Contatos</h1>
+
+        <!-- Formulário continua o mesmo -->
+        <form id="contact-form">
+            <input type="text" id="nome" placeholder="Nome" required>
+            <input type="text" id="sobrenome" placeholder="Sobrenome" required>
+            <input type="tel" id="telefone" placeholder="Telefone" required>
+            <input type="text" id="cidade" placeholder="Cidade" required>
+            <input type="text" id="estado" placeholder="Estado (UF)" required maxlength="2">
+            <button type="submit">Adicionar Contato</button>
+        </form>
+
+        <hr>
+
+        <div class="header-list">
+            <h2>Contatos Salvos</h2>
+            <!-- 2. Botão para exportar -->
+            <button id="export-pdf-btn">Exportar para PDF</button>
+        </div>
+        
+        <table id="contacts-table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Sobrenome</th>
+                    <th>Telefone</th>
+                    <th>Cidade</th>
+                    <th>Estado</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="contacts-list">
+                <!-- As linhas da tabela serão inseridas aqui via JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 3. Área invisível que será usada como modelo para o PDF -->
+    <div id="pdf-content" style="display: none;">
+        <!-- O conteúdo do PDF será gerado aqui via JavaScript -->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
