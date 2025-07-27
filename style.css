@@ -13,7 +13,7 @@ body {
     background-color: #fff;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px M10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1, h2 {
@@ -43,7 +43,7 @@ form input {
 }
 
 form button {
-    grid-column: 1 / -1; /* Ocupa as duas colunas */
+    grid-column: 1 / -1;
     padding: 12px;
     background-color: #007bff;
     color: white;
@@ -58,7 +58,7 @@ form button:hover {
     background-color: #0056b3;
 }
 
-/* --- CABEÇALHO DA LISTA E BOTÃO DE EXPORTAÇÃO --- */
+/* --- CABEÇALHO DA LISTA E BOTÕES --- */
 .header-list {
     display: flex;
     justify-content: space-between;
@@ -72,7 +72,7 @@ form button:hover {
 
 #export-pdf-btn {
     padding: 10px 20px;
-    background-color: #17a2b8; /* Cor ciano para diferenciar */
+    background-color: #17a2b8;
     color: white;
     border: none;
     border-radius: 5px;
@@ -84,7 +84,6 @@ form button:hover {
 #export-pdf-btn:hover {
     background-color: #138496;
 }
-
 
 /* --- TABELA DE CONTATOS --- */
 table {
@@ -117,9 +116,17 @@ th {
     background-color: #c82333;
 }
 
-/* --- ESTILOS PARA O CONTEÚDO DO PDF --- */
-/* Estes estilos são aplicados apenas ao conteúdo que será exportado */
+/* --- ESTILOS PARA O CONTEÚDO DO PDF (MÉTODO CORRETO PARA OCULTAR) --- */
 #pdf-content {
+    /* Esconde o elemento da tela, mas o mantém acessível para o script */
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+
+    /* Estilos que serão aplicados no documento PDF final */
     font-family: Arial, sans-serif;
     color: #333;
     width: 210mm; /* Largura de uma página A4 */
