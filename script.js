@@ -1,29 +1,33 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Seleciona os elementos principais do HTML
+    // 1. Seleciona os elementos principais do HTML com os quais vamos interagir
     const contactForm = document.getElementById('contact-form');
     const contactsList = document.getElementById('contacts-list');
     const exportPdfBtn = document.getElementById('export-pdf-btn');
 
-    // Função para buscar os contatos do localStorage (armazenamento do navegador)
+    // 2. Funções para gerenciar os dados no localStorage (armazenamento do navegador)
+    
+    // Pega a lista de contatos do localStorage. Se não houver nada, retorna um array vazio.
     const getContacts = () => {
         return JSON.parse(localStorage.getItem('contacts')) || [];
     };
 
-    // Função para salvar os contatos no localStorage
+    // Salva a lista de contatos no localStorage.
     const saveContacts = (contacts) => {
         localStorage.setItem('contacts', JSON.stringify(contacts));
     };
 
-    // Função para exibir os contatos na tabela da página
+    // 3. Função para renderizar (desenhar) os contatos na tabela da página
     const renderContacts = () => {
         const contacts = getContacts();
-        contactsList.innerHTML = ''; // Limpa a tabela antes de adicionar os itens
+        contactsList.innerHTML = ''; // Limpa a tabela antes de adicionar os novos itens
 
+        // Se não houver contatos, exibe uma mensagem na tabela
         if (contacts.length === 0) {
             contactsList.innerHTML = '<tr><td colspan="6" style="text-align:center;">Nenhum contato cadastrado.</td></tr>';
             return;
         }
 
+        // Para cada contato no array, cria uma nova linha (<tr>) na tabela
         contacts.forEach((contact, index) => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -38,10 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Evento para o envio do formulário (adicionar novo contato)
+    // 4. Lógica para adicionar um novo contato
     contactForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Impede que a página recarregue
+        e.preventDefault(); // Impede o comportamento padrão do formulário (recarregar a página)
 
+        // Cria um objeto com os dados dos campos do formulário
         const newContact = {
             nome: document.getElementById('nome').value.trim(),
             sobrenome: document.getElementById('sobrenome').value.trim(),
@@ -50,29 +55,30 @@ document.addEventListener('DOMContentLoaded', () => {
             estado: document.getElementById('estado').value.trim().toUpperCase()
         };
 
-        const contacts = getContacts();
-        contacts.push(newContact);
-        saveContacts(contacts);
+        const contacts = getContacts(); // Pega a lista atual
+        contacts.push(newContact);      // Adiciona o novo contato
+        saveContacts(contacts);         // Salva a lista atualizada
 
-        renderContacts(); // Atualiza a tabela na tela
-        contactForm.reset(); // Limpa os campos do formulário
+        renderContacts();               // Atualiza a exibição na tela
+        contactForm.reset();            // Limpa os campos do formulário
     });
 
-    // Evento para deletar um contato (usando delegação de eventos)
+    // 5. Lógica para deletar um contato
     contactsList.addEventListener('click', (e) => {
-        // Verifica se o clique foi no botão de deletar
+        // Verifica se o elemento clicado foi um botão com a classe 'delete-btn'
         if (e.target.classList.contains('delete-btn')) {
+            // Pega o 'index' do contato a ser removido, que guardamos no botão
             const index = e.target.getAttribute('data-index');
             
             const contacts = getContacts();
-            contacts.splice(index, 1); // Remove o contato do array
-            saveContacts(contacts);
+            contacts.splice(index, 1); // Remove o item do array na posição 'index'
+            saveContacts(contacts);    // Salva a lista modificada
 
-            renderContacts(); // Atualiza a tabela
+            renderContacts();          // Atualiza a exibição na tela
         }
     });
 
-    // Função para exportar a lista para PDF
+    // 6. Lógica para exportar a lista para PDF
     const exportToPDF = () => {
         const contacts = getContacts();
         if (contacts.length === 0) {
@@ -82,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const pdfContent = document.getElementById('pdf-content');
 
-        // Cria a data formatada para o cabeçalho do relatório
+        // Cria uma data formatada para o cabeçalho do relatório
         const today = new Date();
         const formattedDate = today.toLocaleDateString('pt-BR', {
             day: '2-digit', month: '2-digit', year: 'numeric'
@@ -118,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         reportHTML += `</tbody></table>`;
-        pdfContent.innerHTML = reportHTML;
+        pdfContent.innerHTML = reportHTML; // Insere o HTML gerado no elemento oculto
 
         // Configurações para a geração do PDF
         const options = {
@@ -129,13 +135,14 @@ document.addEventListener('DOMContentLoaded', () => {
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        // Chama a biblioteca para gerar e baixar o PDF
+        // Chama a biblioteca para gerar e baixar o PDF a partir do elemento oculto
         html2pdf().set(options).from(pdfContent).save();
     };
 
     // Adiciona o evento de clique ao botão de exportar
     exportPdfBtn.addEventListener('click', exportToPDF);
 
-    // Renderiza os contatos que já estão salvos ao carregar a página
+    // 7. Renderização Inicial
+    // Assim que a página carrega, chama a função para exibir os contatos que já estão salvos
     renderContacts();
 });
