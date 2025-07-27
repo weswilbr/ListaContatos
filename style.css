@@ -6,6 +6,7 @@ body {
     margin: 0;
     padding: 20px;
 }
+
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -14,21 +15,23 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
 h1, h2 { text-align: center; color: #0056b3; }
 hr { border: 0; border-top: 1px solid #eee; margin: 30px 0; }
 
 /* --- FORMULÁRIO --- */
 form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-form input { padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
+form input { padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; transition: box-shadow 0.2s; }
+/* MELHORIA: Feedback visual quando um campo está em foco */
+form input:focus { outline: none; border-color: #007bff; box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); }
 form button { grid-column: 1 / -1; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer; transition: background-color 0.3s; }
 form button:hover { background-color: #0056b3; }
-/* NOVO: Cor verde para o botão quando estiver no modo de edição */
 form button.editing { background-color: #28a745; }
 form button.editing:hover { background-color: #218838; }
 
 /* --- CABEÇALHO DA LISTA E BOTÕES --- */
-.header-list { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.header-list h2 { margin: 0; }
+.header-list { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;}
+.header-list h2 { margin: 0; flex-grow: 1; }
 #export-pdf-btn { padding: 10px 20px; background-color: #17a2b8; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer; transition: background-color 0.3s; }
 #export-pdf-btn:hover { background-color: #138496; }
 
@@ -36,28 +39,20 @@ form button.editing:hover { background-color: #218838; }
 table { width: 100%; border-collapse: collapse; margin-top: 10px; }
 th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
 th { background-color: #f2f2f2; }
+td:last-child { white-space: nowrap; } /* Evita que os botões quebrem linha */
 
-.edit-btn {
-    background-color: #007bff;
+.edit-btn, .delete-btn {
     color: white;
     border: none;
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin-right: 5px; /* Espaço entre os botões */
+    margin-right: 5px;
 }
+.edit-btn { background-color: #007bff; }
 .edit-btn:hover { background-color: #0056b3; }
-
-.delete-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+.delete-btn { background-color: #dc3545; }
 .delete-btn:hover { background-color: #c82333; }
 
 /* --- ESTILOS PARA O CONTEÚDO DO PDF --- */
@@ -67,3 +62,12 @@ th { background-color: #f2f2f2; }
 #pdf-content table { width: 100%; border-collapse: collapse; font-size: 11px; }
 #pdf-content th, #pdf-content td { border: 1px solid #ddd; padding: 8px; text-align: left; }
 #pdf-content th { background-color: #f2f2f2; font-weight: bold; }
+
+/* MELHORIA: Media Query para Responsividade */
+@media (max-width: 768px) {
+    body { padding: 10px; }
+    .container { padding: 20px; }
+    form { grid-template-columns: 1fr; } /* Coluna única para o formulário */
+    .header-list { flex-direction: column; align-items: stretch; gap: 15px; }
+    .header-list h2 { text-align: center; }
+}
